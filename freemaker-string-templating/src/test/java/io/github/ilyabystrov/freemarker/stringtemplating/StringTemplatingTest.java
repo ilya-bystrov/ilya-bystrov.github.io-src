@@ -1,4 +1,4 @@
-package io.github.ilyabystrov.freemaker.stringtemplating;
+package io.github.ilyabystrov.freemarker.stringtemplating;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -7,10 +7,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Collections;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import java.util.Map;
 import org.junit.Test;
 
 /**
@@ -18,18 +15,6 @@ import org.junit.Test;
  * @author Ilya Bystrov <ilya.bystrov at outlook.com>
  */
 public class StringTemplatingTest {
-  
-  @Test
-  public void test() throws IOException, TemplateException {
-    
-    String templateStr="Hello, ${user.name} ${user.login}!";
-    Template t = new Template("name", new StringReader(templateStr), new Configuration(Configuration.VERSION_2_3_26));
-    
-    StringWriter out = new StringWriter();
-    t.process(Collections.singletonMap("user", new Person("Ilya Bystrov", "i")), out);
-    
-    System.out.println("out = " + out);
-  }
   
   public static class Person {
     
@@ -48,5 +33,21 @@ public class StringTemplatingTest {
     public String getLastName() {
       return lastName;
     }
+  }
+
+  @Test
+  public void test() throws IOException, TemplateException {
+    
+    String templateStr="Hello, ${person.firstName} ${person.lastName}!";
+    Map<String, Person> parameters = Collections.singletonMap("person", new Person("Ilya", "Bystrov"));
+
+    Configuration configuration = new Configuration(Configuration.VERSION_2_3_26);
+    configuration.setLogTemplateExceptions(false);
+    Template t = new Template(null, new StringReader(templateStr), configuration);
+    
+    StringWriter out = new StringWriter();
+    t.process(parameters, out);
+
+    System.out.println("out = " + out);
   }
 }
