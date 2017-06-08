@@ -8,6 +8,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Collections;
 import java.util.Map;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -16,38 +17,19 @@ import org.junit.Test;
  */
 public class StringTemplatingTest {
   
-  public static class Person {
-    
-    private final String firstName;
-    private final String lastName;
-    
-    public Person(String name, String login) {
-      this.firstName = name;
-      this.lastName = login;
-    }
-    
-    public String getFirstName() {
-      return firstName;
-    }
-    
-    public String getLastName() {
-      return lastName;
-    }
-  }
-
   @Test
   public void test() throws IOException, TemplateException {
     
     String templateStr="Hello, ${person.firstName} ${person.lastName}!";
     Map<String, Person> parameters = Collections.singletonMap("person", new Person("Ilya", "Bystrov"));
-
-    Configuration configuration = new Configuration(Configuration.VERSION_2_3_26);
-    configuration.setLogTemplateExceptions(false);
-    Template t = new Template(null, new StringReader(templateStr), configuration);
+    
+    Configuration cfg = new Configuration(Configuration.VERSION_2_3_26);
+    cfg.setLogTemplateExceptions(false);
+    Template t = new Template(null, new StringReader(templateStr), cfg);
     
     StringWriter out = new StringWriter();
     t.process(parameters, out);
-
-    System.out.println("out = " + out);
+    
+    Assert.assertEquals("Hello, Ilya Bystrov!", out.toString());
   }
 }
