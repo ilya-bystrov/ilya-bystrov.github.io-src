@@ -2,7 +2,7 @@ package io.github.ilyabystrov.freemarker.stringtemplating;
 
 /**
  *
- * @author Ilya Bystrov <ilya.bystrov at outlook.com>
+ * @author Ilya Bystrov
  */
 public class Person {
   

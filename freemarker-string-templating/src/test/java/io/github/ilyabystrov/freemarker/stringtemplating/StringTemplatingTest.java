@@ -13,7 +13,7 @@ import org.junit.Test;
 
 /**
  *
- * @author Ilya Bystrov <ilya.bystrov at outlook.com>
+ * @author Ilya Bystrov
  */
 public class StringTemplatingTest {
   
