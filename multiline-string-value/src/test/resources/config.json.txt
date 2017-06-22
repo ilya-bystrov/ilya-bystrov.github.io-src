@@ -1,0 +1,7 @@
+{
+    "name": "cfg",
+    "sql": "
+-- comment
+SELECT 1
+"
+}
