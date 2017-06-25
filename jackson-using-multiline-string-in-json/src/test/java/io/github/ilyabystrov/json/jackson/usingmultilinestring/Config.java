@@ -1,4 +1,4 @@
-package io.github.ilyabystrov.json.jackson.multilinestringvalue;
+package io.github.ilyabystrov.json.jackson.usingmultilinestring;
 
 /**
  *

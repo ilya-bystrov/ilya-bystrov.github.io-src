@@ -1,4 +1,4 @@
-package io.github.ilyabystrov.json.jackson.multilinestringvalue;
+package io.github.ilyabystrov.json.jackson.usingmultilinestring;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -29,8 +29,8 @@ public class MultilneStringValueTest {
         System.out.println("config.name = " + config.getName());
         System.out.println("config.sql = " + config.getSql());
 
-        TypeReference<LinkedHashMap<String,Object>> typeRef 
-            = new TypeReference<LinkedHashMap<String,Object>>() {};
+        TypeReference<LinkedHashMap<String,String>> typeRef 
+            = new TypeReference<LinkedHashMap<String,String>>() {};
         LinkedHashMap<String,String> map = mapper.readValue(
                 new BufferedReader( new InputStreamReader(
                         getClass().getClassLoader().getResourceAsStream("config.json.txt"))),
