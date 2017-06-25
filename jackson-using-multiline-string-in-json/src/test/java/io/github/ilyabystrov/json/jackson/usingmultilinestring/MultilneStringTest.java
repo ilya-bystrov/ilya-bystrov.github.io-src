@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
  *
  * @author Ilya Bystrov @iliabystrov
  */
-public class MultilneStringValueTest {
+public class MultilneStringTest {
     
     @Test
     public void test() throws Exception {
