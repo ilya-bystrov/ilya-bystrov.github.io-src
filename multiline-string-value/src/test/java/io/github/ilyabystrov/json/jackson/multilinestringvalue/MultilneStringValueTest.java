@@ -1,12 +1,13 @@
 package io.github.ilyabystrov.json.jackson.multilinestringvalue;
 
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Map;
+import java.util.LinkedHashMap;
 
 /**
  *
@@ -28,10 +29,12 @@ public class MultilneStringValueTest {
         System.out.println("config.name = " + config.getName());
         System.out.println("config.sql = " + config.getSql());
 
-        Map map = mapper.readValue(
+        TypeReference<LinkedHashMap<String,Object>> typeRef 
+            = new TypeReference<LinkedHashMap<String,Object>>() {};
+        LinkedHashMap<String,String> map = mapper.readValue(
                 new BufferedReader( new InputStreamReader(
                         getClass().getClassLoader().getResourceAsStream("config.json.txt"))),
-                Map.class);
+                typeRef);
         System.out.println("map = " + map);
     }
 }
