@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+  <action>
+    <actionName>run</actionName>
+    <packagings>
+      <packaging>jar</packaging>
+    </packagings>
+    <goals>
+      <goal>process-classes</goal>
+      <goal>package</goal>
+      <goal>exec:exec</goal>
+    </goals>
+    <properties>
+      <PROP_HADOOP_BIN>/home/files/Infrastructure/hadoop-2.8.1/bin/hadoop</PROP_HADOOP_BIN>
+      <PROP_HADOOP_MAINCLASS>${packageClassName}</PROP_HADOOP_MAINCLASS>
+    </properties>
+  </action>
+  <action>
+    <actionName>debug</actionName>
+    <packagings>
+      <packaging>jar</packaging>
+    </packagings>
+    <goals>
+      <goal>process-classes</goal>
+      <goal>package</goal>
+      <goal>exec:exec</goal>
+    </goals>
+    <properties>
+      <PROP_HADOOP_BIN>/home/files/Infrastructure/hadoop-2.8.1/bin/hadoop</PROP_HADOOP_BIN>
+      <PROP_HADOOP_MAINCLASS>${packageClassName}</PROP_HADOOP_MAINCLASS>
+      <HADOOP_OPTS>-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address}</HADOOP_OPTS>
+      <jpda.listen>true</jpda.listen>
+    </properties>
+  </action>
+</actions>
