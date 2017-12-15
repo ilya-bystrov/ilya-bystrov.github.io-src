@@ -1,0 +1,23 @@
+
+#logging:
+#  level:
+#    org.springframework: debug
+
+#    org.springframework: debug
+# docker run --name mysql --rm -e MYSQL_ROOT_PASSWORD=root --network host mysql:8.0.5
+# docker run --name postgres --rm -e POSTGRES_PASSWORD=root  --network host postgres:10.1
+
+mysql-datasource:
+  datasource:
+    url: jdbc:mysql://localhost/ #skipping DB name
+    username: root
+    password: root
+
+postgres-datasource:
+  datasource:
+    url: jdbc:postgresql://localhost/ #skipping DB name
+    username: postgres
+    password: root
+
+
+
