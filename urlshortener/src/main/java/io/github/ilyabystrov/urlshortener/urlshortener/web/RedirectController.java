@@ -20,7 +20,7 @@ public class RedirectController {
   private LinkService linkService;
 
   @RequestMapping(value = "{shortUrlPath}", method = RequestMethod.GET)
-  public ResponseEntity<?> createAccount(@PathVariable String shortUrlPath) {
+  public ResponseEntity<?> redirect(@PathVariable String shortUrlPath) {
 
     return linkService.findByShortUrl(shortUrlPath)
         .map(link -> {
