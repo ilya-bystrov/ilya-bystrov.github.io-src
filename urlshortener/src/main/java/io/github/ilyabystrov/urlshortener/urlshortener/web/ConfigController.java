@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.Principal;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -60,7 +61,7 @@ public class ConfigController {
   }
 
   @RequestMapping(value = "/register", method = RequestMethod.POST)
-  public ResponseEntity<?> register(@RequestBody Map<String, Object> payload) {
+  public ResponseEntity<?> register(@RequestBody Map<String, Object> payload, Principal principal) {
 
     if (!(payload.get(URL_FIELD) instanceof String)) {
       return ResponseEntity.badRequest().body(new Response(false, "String field '" + URL_FIELD + "' is expected"));
@@ -84,12 +85,14 @@ public class ConfigController {
       return ResponseEntity.badRequest().body(new Response(false, "'" + urlString + " is invalid url"));
     }
 
-    return linkService.findByUrl(url)
+    String accountId = principal.getName();
+
+    return linkService.findByUrlAndAccount_Id(url, accountId)
         .map(link ->
             (ResponseEntity) ResponseEntity.status(HttpStatus.CONFLICT).body(new Response(false, "Link has already been registered")))
         .orElseGet(() ->
             {
-              Link link = linkService.save(new Link(url, redirectType));
+              Link link = linkService.save(new Link(url, redirectType, accountService.findById(accountId).get()));
               Map<String, Object> body = new LinkedHashMap<>();
               body.put(SHORT_URL_FIELD, link.getShortUrl(hostAndPort.get("host"), hostAndPort.get("port")));
               body.put(REDIRECT_TYPE_FIELD, link.getRedirectType());

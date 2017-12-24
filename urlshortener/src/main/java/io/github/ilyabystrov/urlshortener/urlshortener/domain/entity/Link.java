@@ -21,16 +21,20 @@ public class Link {
   @Column(name = "redirect_type")
   private Integer redirectType;
 
+  @Column(name = "visited")
+  private Long visited;
+
   @ManyToOne
   @JoinColumn(name="account_id")
   private Account account;
 
-  public Link(URL url, int redirectType) {
+  public Link(URL url, int redirectType, Account account) {
     this.url = url;
     this.redirectType = redirectType;
+    this.account = account;
   }
 
-  Link() {
+  Link() { // for Hibernate
   }
 
   public Long getId() {
@@ -43,8 +47,7 @@ public class Link {
 
   public URL getShortUrl(String host, String port) {
     try {
-      // Using only http schema for simplicity
-      // Entity contains spring framework dependency for simplicity
+      // Link depends on springframework (UriComponentsBuilder), for simplicity
       return UriComponentsBuilder.newInstance()
           .scheme("http").host(host).port(port)
           .path(SimpleBase62Encoder.encode(getId()))
@@ -60,5 +63,9 @@ public class Link {
 
   public Account getAccount() {
     return account;
+  }
+
+  public Long getVisited() {
+    return visited;
   }
 }

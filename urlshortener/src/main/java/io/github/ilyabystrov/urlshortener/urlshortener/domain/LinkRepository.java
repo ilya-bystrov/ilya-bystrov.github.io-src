@@ -12,5 +12,7 @@ public interface LinkRepository extends Repository<Link, Long> {
 
   Optional<Link> findByUrl(URL url);
 
+  Optional<Link> findByUrlAndAccount_Id(URL url, String accountId);
+
   Link save(Link entity);
 }

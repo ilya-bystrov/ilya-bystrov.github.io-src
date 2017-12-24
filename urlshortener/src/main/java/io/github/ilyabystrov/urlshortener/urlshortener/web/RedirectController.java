@@ -24,6 +24,7 @@ public class RedirectController {
 
     return linkService.findByShortUrl(shortUrlPath)
         .map(link -> {
+          linkService.incrementVisited(link.getId());
           HttpHeaders headers = new HttpHeaders();
           headers.setLocation(URI.create(link.getUrl().toString()));
           return new ResponseEntity<>(headers, HttpStatus.valueOf(link.getRedirectType()));

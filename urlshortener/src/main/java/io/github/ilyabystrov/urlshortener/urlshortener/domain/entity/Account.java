@@ -12,7 +12,7 @@ public class Account {
   @Column(name = "account_id")
   private String id;
 
-  @Column(name = "password") // Can be improved by storing hash
+  @Column(name = "password")
   private String password;
 
   public Account(String id, String password) {
