@@ -1,7 +1,16 @@
 package io.github.ilyabystrov.urlshortener.urlshortener.domain;
 
-import io.github.ilyabystrov.urlshortener.urlshortener.domain.entity.Reference;
+import io.github.ilyabystrov.urlshortener.urlshortener.domain.entity.Link;
 import org.springframework.data.repository.Repository;
 
-public interface LinkRepository extends Repository<Reference, Long> {
+import java.net.URL;
+import java.util.Optional;
+
+public interface LinkRepository extends Repository<Link, Long> {
+
+  Optional<Link> findById(Long id);
+
+  Optional<Link> findByUrl(URL url);
+
+  Link save(Link entity);
 }

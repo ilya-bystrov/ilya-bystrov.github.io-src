@@ -1,26 +1,32 @@
 package io.github.ilyabystrov.urlshortener.urlshortener.web;
 
 import io.github.ilyabystrov.urlshortener.urlshortener.domain.entity.Account;
+import io.github.ilyabystrov.urlshortener.urlshortener.domain.entity.Link;
 import io.github.ilyabystrov.urlshortener.urlshortener.service.AccountService;
+import io.github.ilyabystrov.urlshortener.urlshortener.service.LinkService;
 import io.github.ilyabystrov.urlshortener.urlshortener.web.model.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
-import static io.github.ilyabystrov.urlshortener.urlshortener.util.PasswordGenerator.generatePassword;
+import static io.github.ilyabystrov.urlshortener.urlshortener.util.Utils.PasswordGenerator.generatePassword;
 
-@org.springframework.web.bind.annotation.RestController
-public class RestController {
+
+@RestController
+@RequestMapping(
+    value = "/config",
+      consumes = MediaType.APPLICATION_JSON_VALUE,
+          produces = MediaType.APPLICATION_JSON_VALUE)
+public class ConfigController {
 
   private static final String ACCOUNT_ID_FIELD = "AccountId";
   private static final String URL_FIELD = "url";
@@ -28,11 +34,13 @@ public class RestController {
   @Autowired
   private AccountService accountService;
 
-  @RequestMapping(
-      value = "/account",
-      method = RequestMethod.POST,
-      consumes = MediaType.APPLICATION_JSON_VALUE,
-      produces = MediaType.APPLICATION_JSON_VALUE)
+  @Autowired
+  private LinkService linkService;
+
+  @Value("#{hostAndPort}")
+  private Map<String, String> hostAndPort;
+
+  @RequestMapping( value = "/account", method = RequestMethod.POST)
   public ResponseEntity<?> createAccount(@RequestBody Map<String, Object> payload) {
 
     if (!(payload.get(ACCOUNT_ID_FIELD) instanceof String)) {
@@ -45,14 +53,11 @@ public class RestController {
       return ResponseEntity.status(HttpStatus.CONFLICT).body(new Response(false, "Account with id '" + id + "' already exists"));
     } else {
       Account account = accountService.save(new Account(id, generatePassword()));
-      return ResponseEntity.ok(new Response( true, "Account with id '" + account.getId() + "' was created", Optional.of(account.getPassword())));
+      return ResponseEntity.ok(new Response(true, "Account with id '" + account.getId() + "' was created", Optional.of(account.getPassword())));
     }
   }
 
-  @RequestMapping(value = "/register/",
-      method = RequestMethod.POST,
-      consumes = MediaType.APPLICATION_JSON_VALUE,
-      produces = MediaType.APPLICATION_JSON_VALUE)
+  @RequestMapping(value = "/register", method = RequestMethod.POST)
   public ResponseEntity<?> register(@RequestBody Map<String, Object> payload) {
 
     if (!(payload.get(URL_FIELD) instanceof String)) {
@@ -60,16 +65,22 @@ public class RestController {
     }
 
     String urlString = (String) payload.get(URL_FIELD);
+    URL url;
     try {
-      URL url = new URL(urlString);
+      url = new URL(urlString);
     } catch (MalformedURLException e) {
       return ResponseEntity.badRequest().body(new Response(false, "'" + urlString + " is invalid url"));
     }
 
-
-    String urlAsString = payload.get(URL_FIELD).toString();
-//    return new Account(accountId, generatePassword());
-    return null;
+    return linkService.findByUrl(url)
+        .map(link ->
+            ResponseEntity.ok(Collections.singletonMap("shortUrl", link.getShortUrl(hostAndPort.get("host"), hostAndPort.get("port")))))
+        .orElseGet(() ->
+            {
+              Link link = linkService.save(new Link(url));
+              return ResponseEntity.ok(Collections.singletonMap("shortUrl", link.getShortUrl(hostAndPort.get("host"), hostAndPort.get("port"))));
+            }
+        );
   }
 
   @RequestMapping(value = "/statistic/{accountId}", method = RequestMethod.GET)
