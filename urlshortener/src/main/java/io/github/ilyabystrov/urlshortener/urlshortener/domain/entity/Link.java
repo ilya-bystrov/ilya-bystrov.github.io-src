@@ -19,14 +19,15 @@ public class Link {
   private URL url;
 
   @Column(name = "redirect_type")
-  private String redirectType;
+  private Integer redirectType;
 
   @ManyToOne
   @JoinColumn(name="account_id")
   private Account account;
 
-  public Link(URL url) {
+  public Link(URL url, int redirectType) {
     this.url = url;
+    this.redirectType = redirectType;
   }
 
   Link() {
@@ -53,19 +54,11 @@ public class Link {
     }
   }
 
-  public String getRedirectType() {
+  public Integer getRedirectType() {
     return redirectType;
-  }
-
-  public void setRedirectType(String redirectType) {
-    this.redirectType = redirectType;
   }
 
   public Account getAccount() {
     return account;
-  }
-
-  public void setAccount(Account account) {
-    this.account = account;
   }
 }

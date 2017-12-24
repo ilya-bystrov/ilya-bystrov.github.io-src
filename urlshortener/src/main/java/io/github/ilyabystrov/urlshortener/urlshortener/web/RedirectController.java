@@ -1,6 +1,7 @@
 package io.github.ilyabystrov.urlshortener.urlshortener.web;
 
 import io.github.ilyabystrov.urlshortener.urlshortener.service.LinkService;
+import io.github.ilyabystrov.urlshortener.urlshortener.web.model.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -21,8 +22,11 @@ public class RedirectController {
   @RequestMapping(value = "{shortUrlPath}", method = RequestMethod.GET)
   public ResponseEntity<?> createAccount(@PathVariable String shortUrlPath) {
 
-    HttpHeaders headers = new HttpHeaders();
-    headers.setLocation(URI.create(linkService.findByShortUrl(shortUrlPath).get().getUrl().toString()));
-    return new ResponseEntity<>(headers, HttpStatus.TEMPORARY_REDIRECT);
+    return linkService.findByShortUrl(shortUrlPath)
+        .map(link -> {
+          HttpHeaders headers = new HttpHeaders();
+          headers.setLocation(URI.create(link.getUrl().toString()));
+          return new ResponseEntity<>(headers, HttpStatus.valueOf(link.getRedirectType()));
+        }).orElse(ResponseEntity.ok(new Response(false, "Link is not registered")));
   }
 }

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -24,12 +24,14 @@ import static io.github.ilyabystrov.urlshortener.urlshortener.util.Utils.Passwor
 @RestController
 @RequestMapping(
     value = "/config",
-      consumes = MediaType.APPLICATION_JSON_VALUE,
-          produces = MediaType.APPLICATION_JSON_VALUE)
+    consumes = MediaType.APPLICATION_JSON_VALUE,
+    produces = MediaType.APPLICATION_JSON_VALUE)
 public class ConfigController {
 
-  private static final String ACCOUNT_ID_FIELD = "AccountId";
+  private static final String ACCOUNT_ID_FIELD = "accountId";
   private static final String URL_FIELD = "url";
+  private static final String SHORT_URL_FIELD = "shortUrl";
+  private static final String REDIRECT_TYPE_FIELD = "redirectType";
 
   @Autowired
   private AccountService accountService;
@@ -40,7 +42,7 @@ public class ConfigController {
   @Value("#{hostAndPort}")
   private Map<String, String> hostAndPort;
 
-  @RequestMapping( value = "/account", method = RequestMethod.POST)
+  @RequestMapping(value = "/account", method = RequestMethod.POST)
   public ResponseEntity<?> createAccount(@RequestBody Map<String, Object> payload) {
 
     if (!(payload.get(ACCOUNT_ID_FIELD) instanceof String)) {
@@ -50,10 +52,10 @@ public class ConfigController {
     String id = (String) payload.get(ACCOUNT_ID_FIELD);
 
     if (accountService.findById(id).isPresent()) {
-      return ResponseEntity.status(HttpStatus.CONFLICT).body(new Response(false, "Account with id '" + id + "' already exists"));
+      return ResponseEntity.status(HttpStatus.CONFLICT).body(new Response(false, "Account already exists"));
     } else {
       Account account = accountService.save(new Account(id, generatePassword()));
-      return ResponseEntity.ok(new Response(true, "Account with id '" + account.getId() + "' was created", Optional.of(account.getPassword())));
+      return ResponseEntity.ok(new Response(true, "Account was created", Optional.of(account.getPassword())));
     }
   }
 
@@ -62,6 +64,16 @@ public class ConfigController {
 
     if (!(payload.get(URL_FIELD) instanceof String)) {
       return ResponseEntity.badRequest().body(new Response(false, "String field '" + URL_FIELD + "' is expected"));
+    }
+
+    if (payload.containsKey(REDIRECT_TYPE_FIELD) && !(payload.get(REDIRECT_TYPE_FIELD) instanceof Integer)) {
+      return ResponseEntity.badRequest().body(new Response(false, "Field '" + REDIRECT_TYPE_FIELD + "' value is integer"));
+    }
+
+    int redirectType = (int) payload.getOrDefault(REDIRECT_TYPE_FIELD, HttpStatus.MOVED_TEMPORARILY.value());
+
+    if(redirectType != 301 && redirectType != 302) {
+      return ResponseEntity.badRequest().body(new Response(false, "Use 301 or 302 codes for redirect"));
     }
 
     String urlString = (String) payload.get(URL_FIELD);
@@ -74,11 +86,14 @@ public class ConfigController {
 
     return linkService.findByUrl(url)
         .map(link ->
-            ResponseEntity.ok(Collections.singletonMap("shortUrl", link.getShortUrl(hostAndPort.get("host"), hostAndPort.get("port")))))
+            (ResponseEntity) ResponseEntity.status(HttpStatus.CONFLICT).body(new Response(false, "Link has already been registered")))
         .orElseGet(() ->
             {
-              Link link = linkService.save(new Link(url));
-              return ResponseEntity.ok(Collections.singletonMap("shortUrl", link.getShortUrl(hostAndPort.get("host"), hostAndPort.get("port"))));
+              Link link = linkService.save(new Link(url, redirectType));
+              Map<String, Object> body = new LinkedHashMap<>();
+              body.put(SHORT_URL_FIELD, link.getShortUrl(hostAndPort.get("host"), hostAndPort.get("port")));
+              body.put(REDIRECT_TYPE_FIELD, link.getRedirectType());
+              return ResponseEntity.ok(body);
             }
         );
   }
