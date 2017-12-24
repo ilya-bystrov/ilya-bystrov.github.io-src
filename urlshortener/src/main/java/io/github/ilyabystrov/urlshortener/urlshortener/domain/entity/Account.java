@@ -12,14 +12,22 @@ public class Account {
   @Column(name = "account_id")
   private String id;
 
-  public Account(String id) {
+  @Column(name = "password") // Can be improved by storing hash
+  private String password;
+
+  public Account(String id, String password) {
     this.id = id;
+    this.password = password;
   }
 
-  Account() {
+  Account() { // for Hibernate
   }
 
   public String getId() {
     return id;
+  }
+
+  public String getPassword() {
+    return password;
   }
 }
