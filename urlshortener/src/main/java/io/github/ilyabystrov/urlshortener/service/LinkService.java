@@ -41,7 +41,7 @@ public class LinkService {
     return linkRepository.findByUrlAndAccount_Id(url, accountId);
   }
 
-   // Implemented in lock-free manner
+  // Implemented in lock-free manner
   public void incrementVisited(Long linkId) {
     Map<String, Object> params = new HashMap<>();
     params.put("linkId", linkId);
