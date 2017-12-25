@@ -21,8 +21,8 @@ public class Link {
   @Column(name = "redirect_type")
   private Integer redirectType;
 
-  @Column(name = "visited")
-  private Long visited;
+  @Column(name = "visited", columnDefinition = "bigint default 0 not null")
+  private Long visited = 0l;
 
   @ManyToOne
   @JoinColumn(name="account_id")

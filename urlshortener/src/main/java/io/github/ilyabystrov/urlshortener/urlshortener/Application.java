@@ -41,7 +41,7 @@ public class Application {
 
       @Override
       public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/config/account");
+        web.ignoring().antMatchers("/config/account", "/*");
       }
 
       @Override
