@@ -1,4 +1,4 @@
-package io.github.ilyabystrov.urlshortener.urlshortener.domain.entity;
+package io.github.ilyabystrov.urlshortener.domain.entity;
 
 
 import javax.persistence.Column;

@@ -1,8 +1,8 @@
-package io.github.ilyabystrov.urlshortener.urlshortener.service;
+package io.github.ilyabystrov.urlshortener.service;
 
-import io.github.ilyabystrov.urlshortener.urlshortener.domain.AccountRepository;
-import io.github.ilyabystrov.urlshortener.urlshortener.domain.LinkRepository;
-import io.github.ilyabystrov.urlshortener.urlshortener.domain.entity.Account;
+import io.github.ilyabystrov.urlshortener.domain.AccountRepository;
+import io.github.ilyabystrov.urlshortener.domain.LinkRepository;
+import io.github.ilyabystrov.urlshortener.domain.entity.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.security.core.userdetails.User;

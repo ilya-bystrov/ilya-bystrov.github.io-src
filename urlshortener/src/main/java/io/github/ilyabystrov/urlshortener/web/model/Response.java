@@ -1,4 +1,4 @@
-package io.github.ilyabystrov.urlshortener.urlshortener.web.model;
+package io.github.ilyabystrov.urlshortener.web.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

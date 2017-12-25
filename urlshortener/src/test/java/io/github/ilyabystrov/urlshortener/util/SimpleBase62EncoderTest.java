@@ -1,11 +1,11 @@
-package io.github.ilyabystrov.urlshortener.urlshortener.util;
+package io.github.ilyabystrov.urlshortener.util;
 
 import org.junit.Test;
 
 import java.util.Arrays;
 
-import static io.github.ilyabystrov.urlshortener.urlshortener.util.Utils.SimpleBase62Encoder.decode;
-import static io.github.ilyabystrov.urlshortener.urlshortener.util.Utils.SimpleBase62Encoder.encode;
+import static io.github.ilyabystrov.urlshortener.util.Utils.SimpleBase62Encoder.decode;
+import static io.github.ilyabystrov.urlshortener.util.Utils.SimpleBase62Encoder.encode;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 

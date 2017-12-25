@@ -1,4 +1,4 @@
-package io.github.ilyabystrov.urlshortener.urlshortener;
+package io.github.ilyabystrov.urlshortener;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;

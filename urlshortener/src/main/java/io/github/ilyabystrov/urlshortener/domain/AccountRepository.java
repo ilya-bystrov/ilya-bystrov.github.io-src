@@ -1,6 +1,6 @@
-package io.github.ilyabystrov.urlshortener.urlshortener.domain;
+package io.github.ilyabystrov.urlshortener.domain;
 
-import io.github.ilyabystrov.urlshortener.urlshortener.domain.entity.Account;
+import io.github.ilyabystrov.urlshortener.domain.entity.Account;
 import org.springframework.data.repository.Repository;
 
 import java.util.Optional;

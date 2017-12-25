@@ -1,4 +1,4 @@
-package io.github.ilyabystrov.urlshortener.urlshortener.util;
+package io.github.ilyabystrov.urlshortener.util;
 
 import java.security.SecureRandom;
 import java.util.*;

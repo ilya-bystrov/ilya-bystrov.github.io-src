@@ -1,4 +1,4 @@
-package io.github.ilyabystrov.urlshortener.urlshortener;
+package io.github.ilyabystrov.urlshortener;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

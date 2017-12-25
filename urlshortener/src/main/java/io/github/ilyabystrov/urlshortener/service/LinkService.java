@@ -1,7 +1,7 @@
-package io.github.ilyabystrov.urlshortener.urlshortener.service;
+package io.github.ilyabystrov.urlshortener.service;
 
-import io.github.ilyabystrov.urlshortener.urlshortener.domain.LinkRepository;
-import io.github.ilyabystrov.urlshortener.urlshortener.domain.entity.Link;
+import io.github.ilyabystrov.urlshortener.domain.LinkRepository;
+import io.github.ilyabystrov.urlshortener.domain.entity.Link;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static io.github.ilyabystrov.urlshortener.urlshortener.util.Utils.SimpleBase62Encoder.decode;
+import static io.github.ilyabystrov.urlshortener.util.Utils.SimpleBase62Encoder.decode;
 
 @org.springframework.stereotype.Service
 public class LinkService {

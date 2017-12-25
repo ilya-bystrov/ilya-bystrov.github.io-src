@@ -1,6 +1,6 @@
-package io.github.ilyabystrov.urlshortener.urlshortener.web;
+package io.github.ilyabystrov.urlshortener.web;
 
-import io.github.ilyabystrov.urlshortener.urlshortener.service.AccountService;
+import io.github.ilyabystrov.urlshortener.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;

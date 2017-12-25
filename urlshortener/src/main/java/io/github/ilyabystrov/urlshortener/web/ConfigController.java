@@ -1,10 +1,10 @@
-package io.github.ilyabystrov.urlshortener.urlshortener.web;
+package io.github.ilyabystrov.urlshortener.web;
 
-import io.github.ilyabystrov.urlshortener.urlshortener.domain.entity.Account;
-import io.github.ilyabystrov.urlshortener.urlshortener.domain.entity.Link;
-import io.github.ilyabystrov.urlshortener.urlshortener.service.AccountService;
-import io.github.ilyabystrov.urlshortener.urlshortener.service.LinkService;
-import io.github.ilyabystrov.urlshortener.urlshortener.web.model.Response;
+import io.github.ilyabystrov.urlshortener.domain.entity.Account;
+import io.github.ilyabystrov.urlshortener.domain.entity.Link;
+import io.github.ilyabystrov.urlshortener.service.LinkService;
+import io.github.ilyabystrov.urlshortener.service.AccountService;
+import io.github.ilyabystrov.urlshortener.web.model.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static io.github.ilyabystrov.urlshortener.urlshortener.util.Utils.PasswordGenerator.generatePassword;
+import static io.github.ilyabystrov.urlshortener.util.Utils.PasswordGenerator.generatePassword;
 
 
 @RestController

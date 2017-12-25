@@ -1,7 +1,7 @@
-package io.github.ilyabystrov.urlshortener.urlshortener.web;
+package io.github.ilyabystrov.urlshortener.web;
 
-import io.github.ilyabystrov.urlshortener.urlshortener.service.LinkService;
-import io.github.ilyabystrov.urlshortener.urlshortener.web.model.Response;
+import io.github.ilyabystrov.urlshortener.service.LinkService;
+import io.github.ilyabystrov.urlshortener.web.model.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

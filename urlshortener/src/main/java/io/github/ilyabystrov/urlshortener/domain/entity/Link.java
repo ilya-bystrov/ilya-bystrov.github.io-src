@@ -1,6 +1,6 @@
-package io.github.ilyabystrov.urlshortener.urlshortener.domain.entity;
+package io.github.ilyabystrov.urlshortener.domain.entity;
 
-import io.github.ilyabystrov.urlshortener.urlshortener.util.Utils.SimpleBase62Encoder;
+import io.github.ilyabystrov.urlshortener.util.Utils.SimpleBase62Encoder;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.persistence.*;
