@@ -8,11 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URL;
 import java.security.Principal;
-import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.Map;
-
-import static java.util.stream.Collectors.toMap;
 
 @RestController
 @RequestMapping(
@@ -25,15 +23,12 @@ public class StatisticController {
   private AccountService accountService;
 
   @RequestMapping(value = "{accountId}", method = RequestMethod.GET)
-  public Map<String, Long> statistic(@PathVariable String accountId, Principal principal) {
+  public Map<URL, Long> statistic(@PathVariable String accountId, Principal principal) {
 
     if(!accountId.equals(principal.getName()))  {
-      throw new IllegalArgumentException(); // just exception for simplicity
+      throw new IllegalArgumentException(); // only exception for simplicity
     }
 
-    Map<String, Long> collect = accountService.getStatistic(accountId).entrySet().stream()
-        .map(urlLongEntry -> new SimpleImmutableEntry<>(urlLongEntry.getKey().toString(), urlLongEntry.getValue()))
-        .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
-    return collect;
+    return accountService.getStatistic(accountId);
   }
 }
