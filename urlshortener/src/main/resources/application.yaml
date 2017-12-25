@@ -1,0 +1,15 @@
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.springframework.boot.autoconfigure.security: INFO
+    org.springframework.security: INFO
+spring:
+  jpa:
+    properties:
+      hibernate:
+        hbm2ddl:
+          halt_on_error: true
+        show_sql: true
+        format_sql: false
+        use_sql_comments: false
