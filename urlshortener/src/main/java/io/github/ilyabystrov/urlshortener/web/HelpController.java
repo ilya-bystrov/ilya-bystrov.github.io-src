@@ -19,7 +19,14 @@ public class HelpController {
         "Building\n" +
         "========\n" +
         "\n" +
-        "Checkout source code and run \n" +
+        "Checkout source code\n" +
+        "\n" +
+        "::\n" +
+        "\n" +
+        "  $ git clone https://github.com/ilya-bystrov/ilya-bystrov.github.io-src.git\n" +
+        "  $ cd ilya-bystrov.github.io-src/urlshortener/\n" +
+        "\n" +
+        "and run build \n" +
         "\n" +
         "::\n" +
         "  \n" +

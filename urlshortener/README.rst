@@ -5,7 +5,14 @@ Url Shortener
 Building
 ========
 
-Checkout source code and run 
+Checkout source code
+
+::
+
+  $ git clone https://github.com/ilya-bystrov/ilya-bystrov.github.io-src.git
+  $ cd ilya-bystrov.github.io-src/urlshortener/
+
+and run build 
 
 ::
   
@@ -105,5 +112,3 @@ Check statistic
 
   $ curl -u testAccountX:YVlBF3bE -H 'Content-Type: application/json' localhost:8080/statistic/testAccountX ; echo
   {"https://google.com/search?q=test1":5,"https://google.com/search?q=test2":8}
-
-
