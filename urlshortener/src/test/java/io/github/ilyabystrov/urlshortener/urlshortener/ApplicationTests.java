@@ -8,10 +8,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -28,27 +25,19 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER
 @DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
 public class ApplicationTests {
 
-//  private TestRestTemplate restTemplate = new TestRestTemplate();
-
   @TestConfiguration
   static class Config {
 
     @Bean
     public RestTemplateBuilder restTemplateBuilder() {
       return new RestTemplateBuilder();
-//          .additionalMessageConverters(...)
-//                .customizers(...);
     }
-
   }
-
 
   @Autowired
   private TestRestTemplate restTemplate;
 
   private ThreadLocal<String> testAccountXPassword;
-  private ThreadLocal<String> testAccountYPassword;
-
 
   @Test
   public void contextLoads() {
@@ -72,7 +61,7 @@ public class ApplicationTests {
   }
 
   @Test
-  public void registerUrlUsingAccountXAndRedirect302() {
+  public void createRegisterRedirectAndShowStatistic() {
 
     createAccountX();
 
@@ -81,6 +70,9 @@ public class ApplicationTests {
 
     register301UrlForAccountX();
     redirect301ForAccountX();
+    redirect301ForAccountX();
+
+    statisticForAccountX();
   }
 
   private void register302UrlForAccountX() {
@@ -102,7 +94,7 @@ public class ApplicationTests {
 
   private void register301UrlForAccountX() {
 
-    String testUrl = "https://www.google.ru/search?q=test";
+    String testUrl = "https://www.google.com/search?q=test";
 
     Map<String, Object> body = new HashMap<>();
     body.put("url", testUrl);
@@ -117,9 +109,27 @@ public class ApplicationTests {
 
   private void redirect301ForAccountX() {
 
-    String testUrl = "https://www.google.ru/search?q=test";
+    String testUrl = "https://www.google.com/search?q=test";
     ResponseEntity<String> redirect = restTemplate.exchange("http://localhost:8080/aA5", HttpMethod.GET, HttpEntity.EMPTY, String.class);
     assertThat(redirect.getStatusCode(), is(HttpStatus.MOVED_PERMANENTLY));
     assertThat(redirect.getHeaders().getFirst("Location"), is(testUrl));
+  }
+
+  private void statisticForAccountX() {
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+
+    ResponseEntity<Map> statistic = restTemplate.withBasicAuth("testAccountX", testAccountXPassword.get())
+        .exchange("/statistic/testAccountX", HttpMethod.GET, new HttpEntity<>(null, headers), Map.class);
+
+    assertThat(statistic.getStatusCode(), is(HttpStatus.OK));
+
+    Map<String, Integer> expected = new HashMap<>();
+    expected.put("http://google.com", 1);
+    expected.put("https://www.google.com/search?q=test", 2);
+
+    System.out.println("redirect.getBody() = " + statistic.getBody());
+    assertThat(statistic.getBody(), is(expected));
   }
 }

@@ -100,9 +100,4 @@ public class ConfigController {
             }
         );
   }
-
-  @RequestMapping(value = "/statistic/{accountId}", method = RequestMethod.GET)
-  public Account getAccount(@PathVariable String accountId) {
-    return new Account(accountId, generatePassword());
-  }
 }

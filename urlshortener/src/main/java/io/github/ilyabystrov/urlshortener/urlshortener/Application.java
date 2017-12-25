@@ -28,10 +28,14 @@ public class Application {
 
   @Bean
   public ApplicationListener<EmbeddedServletContainerInitializedEvent> embeddedServletContainerListener(@Value("#{hostAndPort}") Map<String, String> map) {
-    return event -> {
-      int port = event.getEmbeddedServletContainer().getPort();
-      map.put("port", Integer.toString(port));
-      map.put("host", "localhost"); // use 'localhost' for simplicity
+    return new ApplicationListener<EmbeddedServletContainerInitializedEvent>() {
+
+      @Override
+      public void onApplicationEvent(EmbeddedServletContainerInitializedEvent event) {
+        int port = event.getEmbeddedServletContainer().getPort();
+        map.put("port", Integer.toString(port));
+        map.put("host", "localhost"); // use 'localhost' for simplicity
+      }
     };
   }
 
