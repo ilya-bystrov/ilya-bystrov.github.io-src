@@ -10,6 +10,19 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.glassfish.jersey</groupId>
+        <artifactId>jersey-bom</artifactId>
+        <version>2.26</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
     <dependency>
       <groupId>org.hibernate</groupId>
@@ -17,9 +30,9 @@
       <version>5.2.15.Final</version>
     </dependency>
     <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-testing</artifactId>
-        <version>5.2.15.Final</version>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-testing</artifactId>
+      <version>5.2.15.Final</version>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
@@ -31,5 +44,17 @@
       <artifactId>h2</artifactId>
       <version>1.4.197</version>
     </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.inject</groupId>
+      <artifactId>jersey-cdi2-se</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.containers</groupId>
+      <artifactId>jersey-container-grizzly2-http</artifactId>
+    </dependency>
+    <dependency>
+    <groupId>org.glassfish.jersey.media</groupId>
+    <artifactId>jersey-media-json-jackson</artifactId>
+</dependency>
   </dependencies>
 </project>
