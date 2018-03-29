@@ -4,23 +4,16 @@ import io.github.ilyabystrov.demo.restmoneytransferservice.domain.Account;
 import java.math.BigDecimal;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.Metadata;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.testing.transaction.TransactionUtil;
 
 @ApplicationScoped
 public class AccountServce {
   
   private final ConcurrentHashMap<Long, Object> locks = new ConcurrentHashMap<>();
-  private StandardServiceRegistry registry;
 
   @Inject
   private SessionFactory sessionFactory;
@@ -28,24 +21,6 @@ public class AccountServce {
   public AccountServce() {
   }
 
-
-//  @PostConstruct 
-//  public void configurePersistence() {
-    // in real-life example persistence layer should be started sepe
-//    registry = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
-//    Metadata metadata = new MetadataSources(registry).addAnnotatedClass(Account.class).buildMetadata();
-//    sessionFactory = metadata.getSessionFactoryBuilder().build();
-//  }
-
-//  @PreDestroy
-//  public void shutdownPersistence() {
-//    StandardServiceRegistryBuilder.destroy(registry);
-//  }
-
-//  public AccountServce(SessionFactory factory) {
-//    this.sessionFactory = factory;
-//  }
-  
   public void transferMoney(Long senderId, Long recipientId, BigDecimal amount) {
     TransactionUtil.doInHibernate(() -> sessionFactory, session -> {
       transferMoneyHelper(getAccountHelper(senderId).apply(session), getAccountHelper(recipientId).apply(session), amount);
