@@ -4,13 +4,11 @@ import io.github.ilyabystrov.demo.restmoneytransferservice.domain.Account;
 import java.math.BigDecimal;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.testing.transaction.TransactionUtil;
 
-@ApplicationScoped
 public class AccountServce {
   
   private final ConcurrentHashMap<Long, Object> locks = new ConcurrentHashMap<>();
@@ -39,7 +37,7 @@ public class AccountServce {
       synchronized(laterLock) {
         
         if (sender.getBalance().compareTo(amount) < 0) {
-          throw new IllegalStateException( "Transfer cannot be completed, the sender doesn't contain enough money");
+          throw new TransferException(sender, recipient, amount);
         }
         sender.setBalance(sender.getBalance().subtract(amount));
         recipient.setBalance(recipient.getBalance().add(amount));
@@ -50,7 +48,7 @@ public class AccountServce {
   private Function<Session, Account> getAccountHelper(Long accountId) {
     return (Session session) ->
         session.byId(Account.class).loadOptional(accountId)
-            .orElseThrow(() -> new IllegalArgumentException("Account not found: " + accountId));
+            .orElseThrow(() -> new AccountNotFoundException(accountId));
   }
   
   public Account getAccount(Long accountId){

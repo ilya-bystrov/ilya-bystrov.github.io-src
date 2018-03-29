@@ -25,7 +25,7 @@ public class AccountResource {
   public Account getAccount(@PathParam("accountId") Long accountId) {
     return accountService.getAccount(accountId);
   }
-
+  
   @POST
   @Path("transfer")
   @Consumes(MediaType.APPLICATION_JSON)

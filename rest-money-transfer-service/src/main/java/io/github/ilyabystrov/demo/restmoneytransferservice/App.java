@@ -1,7 +1,11 @@
 package io.github.ilyabystrov.demo.restmoneytransferservice;
 
+import io.github.ilyabystrov.demo.restmoneytransferservice.resource.ExceptionLogger;
 import io.github.ilyabystrov.demo.restmoneytransferservice.domain.Account;
+import io.github.ilyabystrov.demo.restmoneytransferservice.resource.AccountNotFoundExceptionMapper;
 import io.github.ilyabystrov.demo.restmoneytransferservice.resource.AccountResource;
+import io.github.ilyabystrov.demo.restmoneytransferservice.resource.TransferExceptionMapper;
+import io.github.ilyabystrov.demo.restmoneytransferservice.service.AccountServce;
 import java.io.IOException;
 import java.net.URI;
 import java.util.logging.Level;
@@ -11,7 +15,13 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.internal.inject.AbstractBinder;
 import org.glassfish.jersey.jackson.JacksonFeature;
+import org.glassfish.jersey.logging.LoggingFeature;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.ServerProperties;
+import org.glassfish.jersey.server.monitoring.ApplicationEvent;
+import org.glassfish.jersey.server.monitoring.ApplicationEventListener;
+import org.glassfish.jersey.server.monitoring.RequestEvent;
+import org.glassfish.jersey.server.monitoring.RequestEventListener;
 import org.glassfish.jersey.server.spi.Container;
 import org.glassfish.jersey.server.spi.ContainerLifecycleListener;
 import org.hibernate.SessionFactory;
@@ -24,7 +34,6 @@ import org.hibernate.service.ServiceRegistry;
 public class App {
   
   private static final URI BASE_URI = URI.create("http://localhost:8080/");
-  public static final String ROOT_ACCOUNT_PATH = "account";
   
   private static ServiceRegistry createHibernateServiceRegistry() {
         return new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
@@ -40,12 +49,19 @@ public class App {
       final ServiceRegistry registry = createHibernateServiceRegistry();
 
       ResourceConfig resourceConfig = new ResourceConfig();
-      resourceConfig.register(AccountResource.class);
+      resourceConfig.property(ServerProperties.RESPONSE_SET_STATUS_OVER_SEND_ERROR, true); 
+      resourceConfig.register( new LoggingFeature(
+          Logger.getLogger(LoggingFeature.DEFAULT_LOGGER_NAME), Level.INFO, LoggingFeature.Verbosity.PAYLOAD_TEXT, 1024));
       resourceConfig.register(JacksonFeature.class);
+      resourceConfig.register(ExceptionLogger.class);
+      resourceConfig.register(AccountNotFoundExceptionMapper.class);
+      resourceConfig.register(TransferExceptionMapper.class);
+      resourceConfig.register(AccountResource.class);
       resourceConfig.registerInstances(new AbstractBinder() {
         @Override
         protected void configure() {
           bind(createHibernateSessionFactory(registry)).to(SessionFactory.class).in(Singleton.class);
+          bind(AccountServce.class).to(AccountServce.class).in(Singleton.class);
         }
       });
       resourceConfig.registerInstances(new ContainerLifecycleListener() {

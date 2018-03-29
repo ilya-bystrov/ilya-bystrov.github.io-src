@@ -115,10 +115,10 @@
       <artifactId>h2</artifactId>
       <version>1.4.197</version>
     </dependency>
-    <dependency>
+    <!--dependency>
       <groupId>org.glassfish.jersey.inject</groupId>
       <artifactId>jersey-cdi2-se</artifactId>
-    </dependency>
+    </dependency-->
     <dependency>
       <groupId>org.glassfish.jersey.containers</groupId>
       <artifactId>jersey-container-grizzly2-http</artifactId>
@@ -132,5 +132,20 @@
       <artifactId>jersey-test-framework-provider-grizzly2</artifactId>
       <scope>test</scope>
     </dependency>
+    <!--org.glassfish.jersey.inject:jersey-hk2:2.26'-->
+    <dependency>
+      <groupId>org.glassfish.jersey.inject</groupId>
+      <artifactId>jersey-hk2</artifactId>
+    </dependency>
+    <!--dependency>
+        <groupId>org.glassfish.jersey.ext.cdi</groupId>
+          <artifactId>jersey-cdi1x</artifactId>
+            <scope>test</scope>
+          </dependency>
+          <dependency>
+              <groupId>org.glassfish.jersey.ext.cdi</groupId>
+                <artifactId>jersey-weld2-se</artifactId>
+                  <scope>test</scope>
+                </dependency-->
   </dependencies>
 </project>

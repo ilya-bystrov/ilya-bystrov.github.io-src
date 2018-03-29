@@ -1,7 +1,6 @@
 package io.github.ilyabystrov.demo.restmoneytransferservice.domain;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
