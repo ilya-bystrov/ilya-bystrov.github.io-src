@@ -2,6 +2,7 @@ package io.github.ilyabystrov.demo.restmoneytransferservice.service;
 
 import io.github.ilyabystrov.demo.restmoneytransferservice.domain.Account;
 import java.math.BigDecimal;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import javax.inject.Inject;
@@ -26,6 +27,10 @@ public class AccountServce {
   }
   
   private void transferMoneyHelper(Account sender, Account recipient, BigDecimal amount) {
+
+    if(Objects.equals(sender.getId(), recipient.getId())) {
+      throw TransferException.sameAccountTransferException(sender, amount);
+    }
     
     locks.putIfAbsent(sender.getId(), new Object());
     locks.putIfAbsent(recipient.getId(), new Object());
@@ -37,7 +42,7 @@ public class AccountServce {
       synchronized(laterLock) {
         
         if (sender.getBalance().compareTo(amount) < 0) {
-          throw new TransferException(sender, recipient, amount);
+          throw TransferException.noMoneyForTransferException(sender, recipient, amount);
         }
         sender.setBalance(sender.getBalance().subtract(amount));
         recipient.setBalance(recipient.getBalance().add(amount));

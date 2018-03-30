@@ -18,19 +18,18 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.logging.LoggingFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
-import org.glassfish.jersey.server.monitoring.ApplicationEvent;
-import org.glassfish.jersey.server.monitoring.ApplicationEventListener;
-import org.glassfish.jersey.server.monitoring.RequestEvent;
-import org.glassfish.jersey.server.monitoring.RequestEventListener;
 import org.glassfish.jersey.server.spi.Container;
 import org.glassfish.jersey.server.spi.ContainerLifecycleListener;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.service.ServiceRegistry;
 
+/**
+ *
+ * @author Ilya Bystrov @iliabystrov
+ */
 public class App {
   
   private static final URI BASE_URI = URI.create("http://localhost:8080/");

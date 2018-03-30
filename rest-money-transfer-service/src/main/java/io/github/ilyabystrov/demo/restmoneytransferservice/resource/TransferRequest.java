@@ -8,6 +8,16 @@ public class TransferRequest {
   private Long recipient;
   private BigDecimal amount;
 
+  // for JSON unmarshalling
+  public TransferRequest() {
+  }
+
+  public TransferRequest(Long sender, Long recipient, BigDecimal amount) {
+    this.sender = sender;
+    this.recipient = recipient;
+    this.amount = amount;
+  }
+
   public Long getSender() {
     return sender;
   }
