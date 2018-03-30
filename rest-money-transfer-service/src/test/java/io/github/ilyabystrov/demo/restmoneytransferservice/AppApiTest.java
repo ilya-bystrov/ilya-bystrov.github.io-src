@@ -2,7 +2,6 @@ package io.github.ilyabystrov.demo.restmoneytransferservice;
 
 import io.github.ilyabystrov.demo.restmoneytransferservice.domain.Account;
 import io.github.ilyabystrov.demo.restmoneytransferservice.resource.TransferRequest;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.FutureTask;
@@ -73,75 +72,4 @@ public class AppApiTest extends JerseyTest {
         .post(entity(new TransferRequest(1l, 1l, new BigDecimal("0.01")), MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(Response.Status.CONFLICT.getStatusCode()));
   }
-
-  @Test
-  public void multithreadedTransfer() throws InterruptedException {
-        
-    final CountDownLatch startGate = new CountDownLatch(1);
-    final CountDownLatch endGate = new CountDownLatch(5);
-
-    new Thread(new FutureTask<>(() -> {
-      startGate.await();
-      for(int i = 0; i < 1000; i++) {
-        target("account/transfer").request()
-            .post(entity(new TransferRequest(1l, 3l, new BigDecimal("1")), MediaType.APPLICATION_JSON));
-      }
-      endGate.countDown();
-      return null;
-    })).start();
-
-    new Thread(new FutureTask<>(() -> {
-      startGate.await();
-      for(int i = 0; i < 1000; i++) {
-        target("account/transfer").request()
-            .post(entity(new TransferRequest(2l, 3l, new BigDecimal("1")), MediaType.APPLICATION_JSON));
-      }
-      endGate.countDown();
-      return null;
-    })).start();
-
-    new Thread(new FutureTask<>(() -> {
-      startGate.await();
-      for(int i = 0; i < 900; i++) {
-        target("account/transfer").request()
-            .post(entity(new TransferRequest(3l, 1l, new BigDecimal("1")), MediaType.APPLICATION_JSON));
-      }
-      endGate.countDown();
-      return null;
-    })).start();
-
-    new Thread(new FutureTask<>(() -> {
-      startGate.await();
-      for(int i = 0; i < 900; i++) {
-        target("account/transfer").request()
-            .post(entity(new TransferRequest(3l, 2l, new BigDecimal("1")), MediaType.APPLICATION_JSON));
-      }
-      endGate.countDown();
-      return null;
-    })).start();
-
-    new Thread(new FutureTask<>(() -> {
-      startGate.await();
-      for(int i = 0; i < 800; i++) {
-        target("account/transfer").request()
-            .post(entity(new TransferRequest(2l, 1l, new BigDecimal("1")), MediaType.APPLICATION_JSON));
-      }
-      endGate.countDown();
-      return null;
-    })).start();
-
-
-    endGate.await();
-
-    // 1->3: 1000
-    // 2->3: 1000
-    // 3->1:  900
-    // 3->2:  900
-    // 2->1:  800
-
-    assertThat(target("account/1").request().get(Account.class), is(new Account(1l, new BigDecimal("100700"))));
-    assertThat(target("account/2").request().get(Account.class), is(new Account(2l, new BigDecimal("199100"))));
-    assertThat(target("account/3").request().get(Account.class), is(new Account(3l, new BigDecimal("300200"))));
-  }
-
 }

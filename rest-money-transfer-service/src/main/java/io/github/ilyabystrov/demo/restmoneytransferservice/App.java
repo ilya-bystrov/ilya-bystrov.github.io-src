@@ -49,8 +49,8 @@ public class App {
 
       ResourceConfig resourceConfig = new ResourceConfig();
       resourceConfig.property(ServerProperties.RESPONSE_SET_STATUS_OVER_SEND_ERROR, true); 
-      resourceConfig.register( new LoggingFeature(
-          Logger.getLogger(LoggingFeature.DEFAULT_LOGGER_NAME), Level.INFO, LoggingFeature.Verbosity.PAYLOAD_TEXT, 1024));
+//      resourceConfig.register( new LoggingFeature(
+//          Logger.getLogger(LoggingFeature.DEFAULT_LOGGER_NAME), Level.INFO, LoggingFeature.Verbosity.PAYLOAD_TEXT, 1024));
       resourceConfig.register(JacksonFeature.class);
       resourceConfig.register(ExceptionLogger.class);
       resourceConfig.register(AccountNotFoundExceptionMapper.class);

@@ -13,41 +13,42 @@ import org.hibernate.testing.transaction.TransactionUtil;
 public class AccountServce {
   
   private final ConcurrentHashMap<Long, Object> locks = new ConcurrentHashMap<>();
-
+  
   @Inject
   private SessionFactory sessionFactory;
-
+  
   public AccountServce() {
   }
-
-  public void transferMoney(Long senderId, Long recipientId, BigDecimal amount) {
-    TransactionUtil.doInHibernate(() -> sessionFactory, session -> {
-      transferMoneyHelper(getAccountHelper(senderId).apply(session), getAccountHelper(recipientId).apply(session), amount);
-    });
-  }
   
-  private void transferMoneyHelper(Account sender, Account recipient, BigDecimal amount) {
-
-    if(Objects.equals(sender.getId(), recipient.getId())) {
-      throw TransferException.sameAccountTransferException(sender, amount);
+  public void transferMoney(Long senderId, Long recipientId, BigDecimal amount) {
+    
+    if(Objects.equals(senderId, recipientId)) {
+      throw TransferException.sameAccountTransferException(senderId, amount);
     }
     
-    locks.putIfAbsent(sender.getId(), new Object());
-    locks.putIfAbsent(recipient.getId(), new Object());
+    locks.putIfAbsent(senderId, new Object());
+    locks.putIfAbsent(recipientId, new Object());
     
-    Object formerLock = sender.getId() < recipient.getId() ? locks.get(sender.getId()) : locks.get(recipient.getId());
-    Object laterLock  = sender.getId() > recipient.getId() ? locks.get(sender.getId()) : locks.get(recipient.getId());
+    Object formerLock = senderId < recipientId ? locks.get(senderId) : locks.get(recipientId);
+    Object laterLock  = senderId > recipientId ? locks.get(senderId) : locks.get(recipientId);
     
     synchronized(formerLock) {
       synchronized(laterLock) {
         
-        if (sender.getBalance().compareTo(amount) < 0) {
-          throw TransferException.noMoneyForTransferException(sender, recipient, amount);
-        }
-        sender.setBalance(sender.getBalance().subtract(amount));
-        recipient.setBalance(recipient.getBalance().add(amount));
+        TransactionUtil.doInHibernate(() -> sessionFactory, session -> {
+          transferMoneyHelper(getAccountHelper(senderId).apply(session), getAccountHelper(recipientId).apply(session), amount);
+        });
       }
     }
+  }
+  
+  private void transferMoneyHelper(Account sender, Account recipient, BigDecimal amount) {
+    
+    if (sender.getBalance().compareTo(amount) < 0) {
+      throw TransferException.noMoneyForTransferException(sender, recipient, amount);
+    }
+    sender.setBalance(sender.getBalance().subtract(amount));
+    recipient.setBalance(recipient.getBalance().add(amount));
   }
   
   private Function<Session, Account> getAccountHelper(Long accountId) {
