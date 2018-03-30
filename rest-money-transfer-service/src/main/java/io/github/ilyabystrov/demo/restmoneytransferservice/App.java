@@ -49,8 +49,6 @@ public class App {
 
       ResourceConfig resourceConfig = new ResourceConfig();
       resourceConfig.property(ServerProperties.RESPONSE_SET_STATUS_OVER_SEND_ERROR, true); 
-//      resourceConfig.register( new LoggingFeature(
-//          Logger.getLogger(LoggingFeature.DEFAULT_LOGGER_NAME), Level.INFO, LoggingFeature.Verbosity.PAYLOAD_TEXT, 1024));
       resourceConfig.register(JacksonFeature.class);
       resourceConfig.register(ExceptionLogger.class);
       resourceConfig.register(AccountNotFoundExceptionMapper.class);
@@ -88,10 +86,7 @@ public class App {
       Runtime.getRuntime().addShutdownHook(new Thread(server::shutdownNow));      
       server.start();
       
-      System.out.println("Application started.\nTry out");
-//      System.out.println(String.format("%s%s", BASE_URI, ROOT_HELLO_PATH));
-//      System.out.println(String.format("%s%s%s", BASE_URI, ROOT_COUNTER_PATH, "/request"));
-//      System.out.println(String.format("%s%s%s", BASE_URI, ROOT_COUNTER_PATH, "/application"));
+      System.out.println("Application started");
       System.out.println("Stop the application using CTRL+C");
       
       Thread.currentThread().join();

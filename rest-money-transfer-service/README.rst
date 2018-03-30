@@ -27,9 +27,9 @@ Build and Run
 ::
 
   mvn package
-  java -jar target/transfer-server.jar
+  java -jar target/transfer-service-app.jar
 
-Use CTRL-C to stop server.
+Use CTRL-C to stop application.
 
 Predefined Data and cURL example
 ================================
