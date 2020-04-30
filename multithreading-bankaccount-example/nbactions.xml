@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>CUSTOM-t1</actionName>
+            <displayName>t1</displayName>
+            <goals>
+                <goal>test-compile</goal>
+                <goal>surefire:test</goal>
+            </goals>
+            <properties>
+                <test>io.github.ilyabystrov.java.multithreading.bankaccountexample.impl.NotSafeTransferManagerTest</test>
+            </properties>
+        </action>
+    </actions>

@@ -1,0 +1,31 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "io.github.ilyabystrov.jhipster.demo"
+    },
+    "jhipsterVersion": "4.5.3",
+    "baseName": "demo",
+    "packageName": "io.github.ilyabystrov.jhipster.demo",
+    "packageFolder": "io/github/ilyabystrov/jhipster/demo",
+    "serverPort": "8080",
+    "authenticationType": "oauth2",
+    "hibernateCache": "no",
+    "clusteredHttpSession": false,
+    "websocket": "spring-websocket",
+    "databaseType": "sql",
+    "devDatabaseType": "postgresql",
+    "prodDatabaseType": "postgresql",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "maven",
+    "enableSocialSignIn": false,
+    "clientFramework": "angular1",
+    "useSass": false,
+    "clientPackageManager": "yarn",
+    "applicationType": "monolith",
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "enableTranslation": false
+  }
+}

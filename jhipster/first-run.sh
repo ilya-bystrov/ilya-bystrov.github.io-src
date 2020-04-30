@@ -1,0 +1,1 @@
+docker container run --name jhipster -v /home/files/Development/ilya-bystrov.github.io-src/jhipster/app:/home/jhipster/app -v ~/.m2:/home/jhipster/.m2 -p 8080:8080 -p 9000:9000 -p 3001:3001 -d -t jhipster/jhipster
